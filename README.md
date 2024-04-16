@@ -1,29 +1,32 @@
-# Projeto de gerencimento de bolsista e seus pagamentos.
+# Projeto de Gerenciamento de Bolsistas e Pagamentos
+
+Este projeto é um sistema de gerenciamento de bolsistas e seus pagamentos.
+
+## Comandos Maven
+
+Para compilar o projeto, execute o seguinte comando:
 
 - mvn clean install
 
 - mvn test
 
-http://localhost:8080/api/bolsistas/findAll - GET
 
-http://localhost:8080/api/bolsistas/alterar-bolsista - POST
+## Endpoints da API
 
-http://localhost:8080/api/bolsistas/insert-bolsista - PUT
+- **GET /api/bolsistas/findAll**: Retorna todos os bolsistas cadastrados.
+- **POST /api/bolsistas/alterar-bolsista**: Altera os dados de um bolsista.
+- **PUT /api/bolsistas/insert-bolsista**: Insere um novo bolsista.
+- **PUT /api/bolsistas/desativar-bolsista/{id}**: Desativa um bolsista pelo ID.
 
-http://localhost:8080/api/bolsistas/desativar-bolsista/2 - PUT
+- **GET /api/pagamentos/findAll**: Retorna todos os pagamentos cadastrados.
+- **POST /api/pagamentos/insert-pagamento**: Insere um novo pagamento.
+- **PUT /api/pagamentos/alterar-pagamento**: Altera os dados de um pagamento.
+- **DELETE /api/pagamentos/remover-pagamento/{id}**: Remove um pagamento pelo ID.
+- **GET /api/pagamentos/find?idPagamento={idPagamento}&idBolsista={idBolsista}**: Retorna um pagamento pelo ID.
 
-http://localhost:8080/api/pagamentos/findAll - GET
+## Exemplo de JSON para Bolsista / Pagamento
 
-http://localhost:8080/api/pagamentos/insert-pagamento - POST
-
-http://localhost:8080/api/pagamentos/alterar-pagamento - PUT
-
-http://localhost:8080/api/pagamentos/remover-pagamento/1 - DELETE
-
-http://localhost:8080/api/pagamentos/find?idPagamento=5&idBolsista=3 - GET
-
-JSON - BOLSISTA
-
+```json
 {
     "id": 4,
     "nomeCompleto": "Willyan Fernando 2",
@@ -36,7 +39,6 @@ JSON - BOLSISTA
     "status": null
 }
 
-JSON - PAGAMENTO
 
 {
     "id": 7,
@@ -48,3 +50,6 @@ JSON - PAGAMENTO
     "valor": 1500.00,
     "status": "SOLICITADO"
 }
+
+
+
