@@ -18,7 +18,7 @@ import com.gerenciamentoBolsista.dto.BolsistaDTO;
 import com.gerenciamentoBolsista.service.BolsistaService;
 
 @RestController
-@RequestMapping("/api/bolsistas")
+@RequestMapping(value ="/api/bolsistas")
 public class BolsistaController {
 
     private final BolsistaService bolsistaService;
@@ -41,7 +41,7 @@ public class BolsistaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BolsistaDTO> encontrarBolsistaPorId(@PathVariable Long id) {
+    public ResponseEntity<BolsistaDTO> getBolsistaPorId(@PathVariable Long id) {
         BolsistaDTO bolsistaDTO = bolsistaService.findById(id);
         return new ResponseEntity<>(bolsistaDTO, HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class BolsistaController {
     public ResponseEntity<BolsistaDTO> atualizarBolsista(@RequestBody BolsistaDTO bolsistaDTOAtualizado) {
         BolsistaDTO bolsistaDTO = bolsistaService.findById(bolsistaDTOAtualizado.getId());
         if (bolsistaDTO == null) {
-            return ResponseEntity.notFound().build();
+        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         BolsistaDTO bolsistaAtualizadoDTO = bolsistaService.salvar(bolsistaDTOAtualizado);
         return new ResponseEntity<>(bolsistaAtualizadoDTO, HttpStatus.OK);
@@ -58,7 +58,12 @@ public class BolsistaController {
 
     @PutMapping("/desativar-bolsista/{id}")
     public ResponseEntity<String> desativarBolsista(@PathVariable Long id) {
-        bolsistaService.desativarBolsista(id);
-        return new ResponseEntity<>("Bolsista desativado com sucesso.",HttpStatus.OK);
+        String resultadoDesativacao = bolsistaService.desativarBolsista(id);
+        
+        if (resultadoDesativacao.equals("OK")) {
+            return new ResponseEntity<>("Bolsista desativado com sucesso.", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(resultadoDesativacao, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.gerenciamentoBolsista.service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import com.gerenciamentoBolsista.dto.BolsistaDTO;
 import com.gerenciamentoBolsista.entity.Bolsista;
+import com.gerenciamentoBolsista.entity.enums.StatusPagamento;
 import com.gerenciamentoBolsista.repository.BolsistaRepository;
+import com.gerenciamentoBolsista.repository.PagamentoRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,6 +23,9 @@ public class BolsistaService {
 
 	@Autowired
 	private BolsistaRepository bolsistaRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -70,11 +76,15 @@ public class BolsistaService {
     }
     
     @Transactional
-    public void desativarBolsista(Long id) {
-        Bolsista bolsista = bolsistaRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Bolsista não encontrado com ID: " + id));
-        bolsista.setStatus(false);
-        bolsistaRepository.save(bolsista);
+    public String desativarBolsista(Long id) {
+    	boolean pagamentosExistem = pagamentoRepository.existsByBolsistaIdAndStatusIn(id, Arrays.asList(StatusPagamento.PAGO, StatusPagamento.SOLICITADO));
+
+        if (pagamentosExistem) {
+           return "Não é possível desativar o bolsista pois existem pagamentos pagos ou solicitados associados a ele.";
+        }
+
+        bolsistaRepository.desativarBolsista(id);
+        return "OK";
     }
 
     private BolsistaDTO convertToDto(Bolsista bolsista) {
