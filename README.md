@@ -51,5 +51,9 @@ Para compilar o projeto, execute o seguinte comando:
     "status": "SOLICITADO"
 }
 
+IMG test
+![image](https://github.com/wcirino/gerenciamento-bolsista-pagamento/assets/73764307/f1da5e32-9d76-4836-902d-2748d2a16879)
+
+
 
 
